@@ -18,7 +18,6 @@ public class TicketMachine {
     private int balance;
     // The total amount of money collected by this machine.
     private int total;
-    private int klasse;
 
     Scanner scanner = new Scanner(System.in);
 
@@ -79,7 +78,9 @@ public class TicketMachine {
             return;
         }
         balance += amount;
-        System.out.println("Rest: " + (price - balance));
+        if (balance < price) {
+            System.out.println("Rest: " + (price - balance));
+        }
     }
 
     /**
@@ -87,10 +88,10 @@ public class TicketMachine {
      * Update the total collected and
      * reduce the balance to zero.
      */
-    public int printTicket() {
+    public void printTicket() {
         if (balance < price) {
             System.out.println("Error: Balance to low");
-            return 0;
+            return;
         }
         // Simulate the printing of a ticket.
         System.out.println("##################");
@@ -103,13 +104,12 @@ public class TicketMachine {
         // Update the total collected with the balance.
         if (balance > price) {
             total += balance - price;
-            return balance - price;
+            return;
         } else {
             total += balance;
         }
         // Clear the balance.
         balance = 0;
-        return 0;
     }
 
     public void showPrice() {
@@ -145,6 +145,7 @@ public class TicketMachine {
         halbtax();
         showPrice();
         while (balance < price) {
+            System.out.println("Geldeingabe: ");
             int money = scanner.nextInt();
             insertMoney(money);
         }
@@ -156,15 +157,10 @@ public class TicketMachine {
         System.out.println("1. oder 2. Klasse:");
         String value = scanner.nextLine();
         switch (value) {
-            case "1" -> {
-                klasse = 1;
-                price += price/2;
+            case "1" -> price += price / 2;
+            case "2" -> {
             }
-            case "2" -> klasse = 2;
-            default -> {
-                System.out.println("Klasse nicht im System vorhanden");
-                klasse = 0;
-            }
+            default -> System.out.println("Klasse nicht im System vorhanden");
         }
     }
 
@@ -178,7 +174,7 @@ public class TicketMachine {
             case "Nein":
                 break;
             default:
-                System.out.println("Bitte mit Ja oder Nein antworten.");
+                System.out.println("Bitte mit Ja oder Nein antworten. Es wurde Nein genommen.");
                 break;
         }
     }
@@ -193,7 +189,7 @@ public class TicketMachine {
             case "Nein":
                 break;
             default:
-                System.out.println("Bitte mit Ja oder Nein antworten.");
+                System.out.println("Bitte mit Ja oder Nein antworten. Es wurde Nein genommen.");
                 break;
         }
     }
